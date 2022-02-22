@@ -14,11 +14,13 @@ public class SrvTcpAdivina_Obj {
     private int port;
     private SecretNum ns;
     private Tauler t;
+    private int turno;
+    private int numeroDeJugadores;
 
     private SrvTcpAdivina_Obj(int port ) {
         this.port = port;
         ns = new SecretNum(100);
-        t = new Tauler();
+
     }
 
     private void listen() {
@@ -30,8 +32,18 @@ public class SrvTcpAdivina_Obj {
                 clientSocket = serverSocket.accept();
                 //Llançar Thread per establir la comunicació
                 //sumem 1 al numero de jugadors
+                numeroDeJugadores++;
+
+                if(numeroDeJugadores % 2 !=0 ){
+                    turno = 1;
+                    t = new Tauler();
+                }else{
+                    turno = 2;
+                }
+
                 t.addNUmPlayers();
-                ThreadServidorAdivina_Obj FilServidor = new ThreadServidorAdivina_Obj(clientSocket, ns, t);
+
+                ThreadServidorAdivina_Obj FilServidor = new ThreadServidorAdivina_Obj(clientSocket, ns, t,turno);
                 Thread client = new Thread(FilServidor);
                 client.start();
             }

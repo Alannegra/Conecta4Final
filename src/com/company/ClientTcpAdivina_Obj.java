@@ -44,7 +44,7 @@ public class ClientTcpAdivina_Obj extends Thread {
 
             //Crear codi de resposta a missatge
             switch (t.resultat) {
-                case 3:	msg = "Benvingut al joc " + Nom + " - " + t.getNumPlayers(); break;
+                case 3:	msg = "Benvingut al joc " + Nom ; break;
                 case 2:	msg = "Més gran"; break;
                 case 1: msg = "Més petit"; break;
                 case 0:
@@ -115,6 +115,7 @@ public class ClientTcpAdivina_Obj extends Thread {
         System.out.println("Ip del servidor?");
         Scanner sip = new Scanner(System.in);
         ipSrv = sip.next();
+        ipSrv = "192.168.1.41";
         System.out.println("Nom jugador:");
         jugador = sip.next();
 

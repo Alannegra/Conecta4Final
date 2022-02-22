@@ -12,53 +12,87 @@ public class ThreadServidorAdivina_Obj implements Runnable {
     private SecretNum ns;
     private Tauler tauler;
     private boolean acabat;
+    public int turno;
 
-    public ThreadServidorAdivina_Obj(Socket clientSocket, SecretNum ns, Tauler t) throws IOException {
+    public ThreadServidorAdivina_Obj(Socket clientSocket, SecretNum ns, Tauler t, int turno) throws IOException {
         this.clientSocket = clientSocket;
         this.ns = ns;
         tauler = t;
         //Al inici de la comunicació el resultat ha de ser diferent de 0(encertat)
         tauler.resultat = 3;
         acabat = false;
+        this.turno = turno;
         //Enllacem els canals de comunicació
         in = clientSocket.getInputStream();
         out = clientSocket.getOutputStream();
         System.out.println("canals i/o creats amb un nou jugador");
     }
 
+
+
     @Override
     public void run() {
         Jugada j = null;
         try {
-            while(!acabat) {
+            while (!acabat) {
 
                 //Enviem tauler al jugador
                 ObjectOutputStream oos = new ObjectOutputStream(out);
                 oos.writeObject(tauler);
                 oos.flush();
 
-                //Llegim la jugada
-                ObjectInputStream ois = new ObjectInputStream(in);
-                try {
-                    j = (Jugada) ois.readObject();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
+                if (tauler.turno == 1 && turno == 1) {
+                    //Llegim la jugada
+                    ObjectInputStream ois = new ObjectInputStream(in);
+                    try {
+                        j = (Jugada) ois.readObject();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println("jugada: " + j.Nom + "->" + j.num);
+                    if (!tauler.map_jugadors.containsKey(j.Nom)) tauler.map_jugadors.put(j.Nom, 1);
+                    else {
+                        //Si el judador ja esxiteix, actualitzem la quatitat de tirades
+                        int tirades = tauler.map_jugadors.get(j.Nom) + 1;
+                        tauler.map_jugadors.put(j.Nom, tirades);
+                    }
+
+                    //comprobar la jugada i actualitzar tauler amb el resultat de la jugada
+                    tauler.resultat = ns.comprova(j.num);
+                    if (tauler.resultat == 0) {
+                        acabat = true;
+                        System.out.println(j.Nom + " l'ha encertat");
+                        tauler.acabats++;
+                    }
+                    tauler.turno = 2;
                 }
-                System.out.println("jugada: " + j.Nom + "->" + j.num);
-                if(!tauler.map_jugadors.containsKey(j.Nom)) tauler.map_jugadors.put(j.Nom, 1);
-                else {
-                    //Si el judador ja esxiteix, actualitzem la quatitat de tirades
-                    int tirades = tauler.map_jugadors.get(j.Nom) + 1;
-                    tauler.map_jugadors.put(j.Nom, tirades);
+                System.out.println("Le toca al Jugador:" + tauler.turno + " y el Jugador " + turno + " esta esperando");
+                if (tauler.turno == 2 && turno == 2) {
+                    //Llegim la jugada
+                    ObjectInputStream ois = new ObjectInputStream(in);
+                    try {
+                        j = (Jugada) ois.readObject();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println("jugada: " + j.Nom + "->" + j.num);
+                    if (!tauler.map_jugadors.containsKey(j.Nom)) tauler.map_jugadors.put(j.Nom, 1);
+                    else {
+                        //Si el judador ja esxiteix, actualitzem la quatitat de tirades
+                        int tirades = tauler.map_jugadors.get(j.Nom) + 1;
+                        tauler.map_jugadors.put(j.Nom, tirades);
+                    }
+
+                    //comprobar la jugada i actualitzar tauler amb el resultat de la jugada
+                    tauler.resultat = ns.comprova(j.num);
+                    if (tauler.resultat == 0) {
+                        acabat = true;
+                        System.out.println(j.Nom + " l'ha encertat");
+                        tauler.acabats++;
+                    }
+                    tauler.turno = 1;
                 }
 
-                //comprobar la jugada i actualitzar tauler amb el resultat de la jugada
-                tauler.resultat = ns.comprova(j.num);
-                if(tauler.resultat == 0) {
-                    acabat = true;
-                    System.out.println(j.Nom + " l'ha encertat");
-                    tauler.acabats++;
-                }
             }
         }catch(IOException e){
             System.out.println(e.getLocalizedMessage());

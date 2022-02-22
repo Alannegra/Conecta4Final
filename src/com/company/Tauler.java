@@ -8,6 +8,7 @@ public class Tauler implements Serializable {
     public Map<String,Integer> map_jugadors;
     public int resultat = 3, acabats;
     private int numPlayers;
+    public int turno = 1;
 
     public Tauler() {
         map_jugadors = new HashMap<>();

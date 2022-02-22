@@ -41,6 +41,7 @@ public class ClientTcpAdivina_Obj extends Thread {
         while(continueConnected){
             //Llegir info del servidor (estat del tauler)
             t = getRequest();
+            j.turno = t.getNumPlayers();
 
             //Crear codi de resposta a missatge
             switch (t.resultat) {
@@ -56,19 +57,21 @@ public class ClientTcpAdivina_Obj extends Thread {
             System.out.println(msg);
             System.out.println(t);
 
-            if(t.resultat != 0) {
-                System.out.println("Entra un número: ");
-                j.num = scin.nextInt();
-                j.Nom = Nom;
-                try {
-                    ObjectOutputStream oos = new ObjectOutputStream(out);
-                    oos.writeObject(j);
-                    out.flush();
-                } catch (IOException e) {
-                    e.printStackTrace();
+            if(t.turno == j.turno){
+                if(t.resultat != 0) {
+                    System.out.println("Entra un número: ");
+                    j.num = scin.nextInt();
+                    j.Nom = Nom;
+                    try {
+                        ObjectOutputStream oos = new ObjectOutputStream(out);
+                        oos.writeObject(j);
+                        out.flush();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
 
+            }
 
         }
 

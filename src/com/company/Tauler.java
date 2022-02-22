@@ -32,6 +32,7 @@ public class Tauler implements Serializable {
 }
 
 class Jugada implements Serializable {
+    int turno;
     String Nom;
     int num;
 }

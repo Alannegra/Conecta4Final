@@ -4,6 +4,8 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -12,6 +14,7 @@ public class ClientTcpAdivina_Obj extends Thread {
     /* CLient TCP que ha endevinar un número pensat per SrvTcpAdivina_Obj.java */
 
     private String Nom;
+    private String NumeroDeJugador;
     private Socket socket;
     private InputStream in;
     private OutputStream out;
@@ -38,16 +41,21 @@ public class ClientTcpAdivina_Obj extends Thread {
 
     public void run() {
         String msg = null;
-        while(continueConnected){
+        while(continueConnected) {
             //Llegir info del servidor (estat del tauler)
             t = getRequest();
-            j.turno = t.getNumPlayers();
 
             //Crear codi de resposta a missatge
             switch (t.resultat) {
-                case 3:	msg = "Benvingut al joc " + Nom ; break;
-                case 2:	msg = "Més gran"; break;
-                case 1: msg = "Més petit"; break;
+                case 3:
+                    msg = "Benvingut al joc " + Nom + " - " + t.getNumPlayers();
+                    break;
+                case 2:
+                    msg = "Més gran";
+                    break;
+                case 1:
+                    msg = "Més petit";
+                    break;
                 case 0:
                     System.out.println("Correcte");
                     System.out.println(t);
@@ -57,24 +65,46 @@ public class ClientTcpAdivina_Obj extends Thread {
             System.out.println(msg);
             System.out.println(t);
 
-            if(t.turno == j.turno){
-                if(t.resultat != 0) {
-                    System.out.println("Entra un número: ");
-                    j.num = scin.nextInt();
-                    j.Nom = Nom;
-                    try {
-                        ObjectOutputStream oos = new ObjectOutputStream(out);
-                        oos.writeObject(j);
-                        out.flush();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+            try {
+                if (t.map_jugadors.get(j.Nom)   ) {
+                    if (t.resultat != 0) {
+                        System.out.println("Entra un número: ");
+                        j.num = scin.nextInt();
+                        j.Nom = Nom;
+                        j.numeroDeJugador = NumeroDeJugador;
+                        try {
+                            ObjectOutputStream oos = new ObjectOutputStream(out);
+                            oos.writeObject(j);
+                            out.flush();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    j.numeroDeJugador = "2";
+                    NumeroDeJugador = "2";
+                    ArrayList<String> arrayList = new ArrayList<>();
+                    t.map_jugadors.forEach((k,v) -> arrayList.add(k));
+                    for (String m : arrayList) {
+                        if(m != j.Nom){
+                            t.map_jugadors.put(m,1);
+                        }
                     }
                 }
+            }catch (Exception e){
 
             }
 
-        }
 
+            try {
+                j.numeroDeJugador = NumeroDeJugador;
+                j.Nom = Nom;
+                ObjectOutputStream oos = new ObjectOutputStream(out);
+                oos.writeObject(j);
+                out.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         close(socket);
 
     }
@@ -113,17 +143,21 @@ public class ClientTcpAdivina_Obj extends Thread {
 
     public static void main(String[] args) {
         String jugador, ipSrv;
+        String numeroDeJugador;
 
         //Demanem la ip del servidor i nom del jugador
         System.out.println("Ip del servidor?");
         Scanner sip = new Scanner(System.in);
         ipSrv = sip.next();
-        ipSrv = "192.168.1.41";
+        ipSrv = "192.168.22.109";
         System.out.println("Nom jugador:");
         jugador = sip.next();
+        System.out.println("Numero de jugador");
+        numeroDeJugador = sip.next();
 
         ClientTcpAdivina_Obj clientTcp = new ClientTcpAdivina_Obj(ipSrv,5558);
         clientTcp.Nom = jugador;
+        clientTcp.NumeroDeJugador = numeroDeJugador;
         clientTcp.start();
     }
 }

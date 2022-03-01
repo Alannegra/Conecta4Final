@@ -12,7 +12,6 @@ public class ThreadServidorAdivina_Obj implements Runnable {
     private SecretNum ns;
     private Tauler tauler;
     private boolean acabat;
-    public int turno;
 
     public ThreadServidorAdivina_Obj(Socket clientSocket, SecretNum ns, Tauler t, int turno) throws IOException {
         this.clientSocket = clientSocket;
@@ -21,8 +20,6 @@ public class ThreadServidorAdivina_Obj implements Runnable {
         //Al inici de la comunicació el resultat ha de ser diferent de 0(encertat)
         tauler.resultat = 3;
         acabat = false;
-        this.turno = turno;
-        t.turno = 1;
         //Enllacem els canals de comunicació
         in = clientSocket.getInputStream();
         out = clientSocket.getOutputStream();
@@ -33,46 +30,36 @@ public class ThreadServidorAdivina_Obj implements Runnable {
     public void run() {
         Jugada j = null;
         try {
-            while (!acabat) {
+            while(!acabat) {
 
                 //Enviem tauler al jugador
                 ObjectOutputStream oos = new ObjectOutputStream(out);
                 oos.writeObject(tauler);
                 oos.flush();
 
+                //Llegim la jugada
+                ObjectInputStream ois = new ObjectInputStream(in);
+                try {
+                    j = (Jugada) ois.readObject();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("jugada: " + j.Nom + "->" + j.num);
+                if(!tauler.map_jugadors.containsKey(j.Nom)) tauler.map_jugadors.put(j.Nom, 1);
+                else {
+                    //Si el judador ja esxiteix, actualitzem la quatitat de tirades
+                    int tirades = tauler.map_jugadors.get(j.Nom) + 1;
+                    int a = Integer.parseInt(j.numeroDeJugador);
+                    tauler.map_jugadors.put(j.Nom, a);
+                }
 
-                    //Llegim la jugada
-                    ObjectInputStream ois = new ObjectInputStream(in);
-                    try {
-                        j = (Jugada) ois.readObject();
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    }
-
-
-                    System.out.println("jugada: " + j.Nom + "->" + j.num);
-                    if (!tauler.map_jugadors.containsKey(j.Nom)) tauler.map_jugadors.put(j.Nom, 1);
-                    else {
-                        //Si el judador ja esxiteix, actualitzem la quatitat de tirades
-                        int tirades = tauler.map_jugadors.get(j.Nom) + 1;
-                        tauler.map_jugadors.put(j.Nom, tirades);
-                    }
-
-                    //comprobar la jugada i actualitzar tauler amb el resultat de la jugada
-                    tauler.resultat = ns.comprova(j.num);
-
-
-                    if(j.turno % 2 !=0){
-                        tauler.turno = 2;
-                    }else{
-                        tauler.turno = 1;
-                    }
-
-                    if (tauler.resultat == 0) {
-                        acabat = true;
-                        System.out.println(j.Nom + " l'ha encertat");
-                        tauler.acabats++;
-                    }
+                //comprobar la jugada i actualitzar tauler amb el resultat de la jugada
+                tauler.resultat = ns.comprova(j.num);
+                if(tauler.resultat == 0) {
+                    acabat = true;
+                    System.out.println(j.Nom + " l'ha encertat");
+                    tauler.acabats++;
+                }
             }
         }catch(IOException e){
             System.out.println(e.getLocalizedMessage());

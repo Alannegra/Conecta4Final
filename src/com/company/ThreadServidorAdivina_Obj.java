@@ -45,12 +45,20 @@ public class ThreadServidorAdivina_Obj implements Runnable {
                     e.printStackTrace();
                 }
                 System.out.println("jugada: " + j.Nom + "->" + j.num);
-                if(!tauler.map_jugadors.containsKey(j.Nom)) tauler.map_jugadors.put(j.Nom, 1);
+                if(!tauler.map_jugadors.containsKey(j.Nom)){
+                    tauler.map_jugadors.put(j.Nom, Integer.parseInt(j.numeroDeJugador));
+                }
                 else {
                     //Si el judador ja esxiteix, actualitzem la quatitat de tirades
                     int tirades = tauler.map_jugadors.get(j.Nom) + 1;
                     int a = Integer.parseInt(j.numeroDeJugador);
                     tauler.map_jugadors.put(j.Nom, a);
+                    //System.out.println(j.OtroInt + "XD");
+                    if(j.OtroInt == 1 ){
+                        tauler.map_jugadors.put(j.OtroString, j.OtroInt);
+                    }else{
+
+                    }
                 }
 
                 //comprobar la jugada i actualitzar tauler amb el resultat de la jugada

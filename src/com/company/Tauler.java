@@ -21,6 +21,10 @@ public class Tauler implements Serializable {
         this.numPlayers++;
     }
 
+    public void put(String s,int i){
+        map_jugadors.put(s,i);
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -32,6 +36,8 @@ public class Tauler implements Serializable {
 
 class Jugada implements Serializable {
     String Nom;
+    String OtroString;
     int num;
+    int OtroInt;
     String numeroDeJugador;
 }

@@ -7,7 +7,9 @@ import java.util.Map;
 public class Tauler implements Serializable {
     public Map<String,Integer> map_jugadors;
     public int resultat = 3, acabats;
+    public int turno = 1;
     private int numPlayers;
+    public int matrix[][] = new int[6][7];
 
     public Tauler() {
         map_jugadors = new HashMap<>();
@@ -23,6 +25,16 @@ public class Tauler implements Serializable {
 
     public void put(String s,int i){
         map_jugadors.put(s,i);
+    }
+
+    public int cambioTurno() {
+        if(turno == 1) {
+            turno = 2;
+        }
+        else {
+            turno = 1;
+        }
+        return turno;
     }
 
     @Override

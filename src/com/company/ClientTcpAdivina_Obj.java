@@ -70,64 +70,26 @@ public class ClientTcpAdivina_Obj extends Thread {
             System.out.println(t);
 
             try {
-                if (t.map_jugadors.get(j.Nom) == 1) {
+                if (t.map_jugadors.get(j.Nom) == t.turno) {
                     if (t.resultat != 0) {
                         System.out.println("Entra un número: ");
                         j.num = scin.nextInt();
-                        j.Nom = Nom;
+                        /*j.Nom = Nom;
                         j.numeroDeJugador = NumeroDeJugador;
-                        try {
-                            ObjectOutputStream oos = new ObjectOutputStream(out);
-                            oos.writeObject(j);
-                            out.flush();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        */
+                        t.cambioTurno();
                     }
-                    j.numeroDeJugador = "2";
-                    NumeroDeJugador = "2";
-                    ArrayList<String> arrayList = new ArrayList<>();
-                    t.map_jugadors.forEach((k,v) -> arrayList.add(k));
-                    for (String m : arrayList) {
-                        if(!m.equals(j.Nom)){
-                            t.map_jugadors.put(m,1);
-                            t.put(m,1);
-                            OtroString = m;
-                            OtroInt = 1;
-                            System.out.println(m+ "Mira");
-                        }
-                    }
-                    puerta = false;
+
+
                 }
             }catch (Exception e){
 
             }
 
-            if(puerta) {
-                ArrayList<String> arrayList = new ArrayList<>();
-                t.map_jugadors.forEach((k, v) -> arrayList.add(k));
-                for (String m : arrayList) {
-                    if (!m.equals(j.Nom)) {
-                        t.map_jugadors.put(m, 1);
-                        t.put(m, 1);
-                        OtroString = m;
-                        OtroInt = 1;
-                        System.out.println(m + "Mira");
-                    }
-                }
-            }
-            puerta = true;
 
             try {
                 j.numeroDeJugador = NumeroDeJugador;
                 j.Nom = Nom;
-                if(OtroInt == 1){
-                    j.OtroString = OtroString;
-                    j.OtroInt = OtroInt;
-                }else{
-                    j.OtroString = null;
-                    j.OtroInt = 0;
-                }
 
                 ObjectOutputStream oos = new ObjectOutputStream(out);
                 oos.writeObject(j);
@@ -180,8 +142,8 @@ public class ClientTcpAdivina_Obj extends Thread {
         System.out.println("Ip del servidor?");
         Scanner sip = new Scanner(System.in);
         ipSrv = sip.next();
-        //ipSrv = "192.168.22.109";
-        ipSrv = "192.168.1.39";
+        ipSrv = "192.168.22.109";
+        //ipSrv = "192.168.1.39";
         System.out.println("Nom jugador:");
         jugador = sip.next();
         System.out.println("Numero de jugador");

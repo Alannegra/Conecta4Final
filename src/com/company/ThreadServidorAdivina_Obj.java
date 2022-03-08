@@ -53,12 +53,12 @@ public class ThreadServidorAdivina_Obj implements Runnable {
                     int tirades = tauler.map_jugadors.get(j.Nom) + 1;
                     int a = Integer.parseInt(j.numeroDeJugador);
                     tauler.map_jugadors.put(j.Nom, a);
-                    //System.out.println(j.OtroInt + "XD");
-                    if(j.OtroInt == 1 ){
-                        tauler.map_jugadors.put(j.OtroString, j.OtroInt);
-                    }else{
 
+                    if (tauler.map_jugadors.get(j.Nom) == tauler.turno) {
+                        tauler.cambioTurno();
                     }
+                    //System.out.println(j.OtroInt + "XD");
+
                 }
 
                 //comprobar la jugada i actualitzar tauler amb el resultat de la jugada

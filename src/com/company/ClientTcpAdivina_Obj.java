@@ -73,6 +73,12 @@ public class ClientTcpAdivina_Obj extends Thread {
                 if (t.map_jugadors.get(j.Nom) == t.turno) {
                     if (t.resultat != 0) {
                         System.out.println("Entra un número: ");
+                        for (int i = 0; i < t.matrix.length; i++) {
+                            for (int k = 0; k < t.matrix[i].length; k++) {
+                                System.out.print(t.matrix[i][k] + " ");
+                            }
+                            System.out.println();
+                        }
                         j.num = scin.nextInt();
                         /*j.Nom = Nom;
                         j.numeroDeJugador = NumeroDeJugador;
@@ -82,6 +88,7 @@ public class ClientTcpAdivina_Obj extends Thread {
 
 
                 }
+
             }catch (Exception e){
 
             }

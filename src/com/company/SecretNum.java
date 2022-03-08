@@ -33,6 +33,7 @@ public class SecretNum {
         else return "Més gran";
     }
 
+
     public int getNum() {
         return num;
     }

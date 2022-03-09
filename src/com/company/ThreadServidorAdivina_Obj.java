@@ -53,11 +53,35 @@ public class ThreadServidorAdivina_Obj implements Runnable {
                     int tirades = tauler.map_jugadors.get(j.Nom) + 1;
 
                     int a = Integer.parseInt(j.numeroDeJugador);
-                    tauler.map_jugadors.put(j.Nom, a);
+
 
                     if (tauler.map_jugadors.get(j.Nom) == tauler.turno) {
+
+                        for (int i = 5; i > 0; i--) {
+                            if (tauler.matrix[i][j.num-1] == 0){
+                                tauler.matrix[i][j.num-1] = Integer.parseInt(j.numeroDeJugador);
+                                break;
+                            }
+                        }
+
+                        int puntos = 0;
+                        boolean ganar = false;
+                        for (int i = 0; i < tauler.matrix.length - 1; i++) {
+                            if (tauler.matrix[i][j.num-1] == Integer.parseInt(j.numeroDeJugador) && tauler.matrix[i+1][j.num-1] == tauler.matrix[i][j.num-1]){
+                                puntos++;
+                            }else{
+                                puntos = 0;}
+
+                        }
+                        if (puntos == 3){
+                            ganar = true;
+                            System.out.println("ganar");
+                        }
+
                         tauler.cambioTurno();
                     }
+                    Thread.sleep(5000);
+                    tauler.map_jugadors.put(j.Nom, a);
                     //System.out.println(j.OtroInt + "XD");
 
 
@@ -77,38 +101,21 @@ public class ThreadServidorAdivina_Obj implements Runnable {
                         }
                     }*/
 
-                    for (int i = 5; i > 0; i--) {
-                        if (tauler.matrix[i][j.num-1] == 0){
-                            tauler.matrix[i][j.num-1] = Integer.parseInt(j.numeroDeJugador);
-                            break;
-                        }
-                    }
 
-                    int puntos = 0;
-                    boolean ganar = false;
-                    for (int i = 0; i < tauler.matrix.length - 1; i++) {
-                        if (tauler.matrix[i][j.num] == Integer.parseInt(j.numeroDeJugador) && tauler.matrix[i+1][j.num] == tauler.matrix[i][j.num]){
-                            puntos++;
-                        }else{puntos = 0;}
-                    }
-                    if (puntos == 3){
-                        ganar = true;
-                        System.out.println("ganar");
-                    }
 
 
                 }
 
                 //comprobar la jugada i actualitzar tauler amb el resultat de la jugada
-                tauler.resultat = ns.comprova(j.num);
-
+                //tauler.resultat = ns.comprova(j.num);
+                tauler.resultat = 4;
                 if(tauler.resultat == 0) {
                     acabat = true;
                     System.out.println(j.Nom + " l'ha encertat");
                     tauler.acabats++;
                 }
             }
-        }catch(IOException e){
+        }catch(IOException | InterruptedException e){
             System.out.println(e.getLocalizedMessage());
         }
         //Enviem últim estat del tauler abans de acabar amb la comunicació i acabem

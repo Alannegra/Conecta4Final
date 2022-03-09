@@ -51,6 +51,9 @@ public class ClientTcpAdivina_Obj extends Thread {
 
             //Crear codi de resposta a missatge
             switch (t.resultat) {
+                case 4:
+                    msg = "Espera un momento " + Nom + " - ";
+                    break;
                 case 3:
                     msg = "Benvingut al joc " + Nom + " - ";
                     break;
@@ -68,17 +71,24 @@ public class ClientTcpAdivina_Obj extends Thread {
             }
             System.out.println(msg);
             System.out.println(t);
+            for (int i = 0; i < t.matrix.length; i++) {
+                for (int k = 0; k < t.matrix[i].length; k++) {
+                    System.out.print(t.matrix[i][k] + " ");
+                }
+                System.out.println();
+            }
 
             try {
+
                 if (t.map_jugadors.get(j.Nom) == t.turno) {
                     if (t.resultat != 0) {
                         System.out.println("Entra un número: ");
-                        for (int i = 0; i < t.matrix.length; i++) {
+                        /*for (int i = 0; i < t.matrix.length; i++) {
                             for (int k = 0; k < t.matrix[i].length; k++) {
                                 System.out.print(t.matrix[i][k] + " ");
                             }
                             System.out.println();
-                        }
+                        }*/
                         j.num = scin.nextInt();
                         /*j.Nom = Nom;
                         j.numeroDeJugador = NumeroDeJugador;
@@ -149,8 +159,8 @@ public class ClientTcpAdivina_Obj extends Thread {
         System.out.println("Ip del servidor?");
         Scanner sip = new Scanner(System.in);
         ipSrv = sip.next();
-        ipSrv = "192.168.22.109";
-        //ipSrv = "192.168.1.39";
+        //ipSrv = "192.168.22.109";
+        ipSrv = "192.168.1.39";
         System.out.println("Nom jugador:");
         jugador = sip.next();
         System.out.println("Numero de jugador");

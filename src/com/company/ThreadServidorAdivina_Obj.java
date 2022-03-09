@@ -13,6 +13,7 @@ public class ThreadServidorAdivina_Obj implements Runnable {
     private Tauler tauler;
     private boolean acabat;
     private boolean ganar = false;
+    private int puntos = 0, fila = 5, diagonalFila, diagonalDerecha;
 
     public ThreadServidorAdivina_Obj(Socket clientSocket, SecretNum ns, Tauler t, int turno) throws IOException {
         this.clientSocket = clientSocket;
@@ -64,10 +65,11 @@ public class ThreadServidorAdivina_Obj implements Runnable {
                             if (tauler.matrix[i][j.num-1] == 0){
                                 tauler.matrix[i][j.num-1] = Integer.parseInt(j.numeroDeJugador);
                                 break;
+                            }else{
+                                fila--;
                             }
                         }
 
-                        int puntos = 0;
 
                         for (int i = 0; i < tauler.matrix.length - 1; i++) {
                             if (tauler.matrix[i][j.num-1] == Integer.parseInt(j.numeroDeJugador) && tauler.matrix[i+1][j.num-1] == Integer.parseInt(j.numeroDeJugador)){
@@ -78,6 +80,20 @@ public class ThreadServidorAdivina_Obj implements Runnable {
 
                         }
 
+                        if (puntos != 3){
+                            for (int i = 0; i < 5; i++) {
+                                if (tauler.matrix[fila][i] == Integer.parseInt(j.numeroDeJugador) && tauler.matrix[fila][i+1] == Integer.parseInt(j.numeroDeJugador)){
+                                    puntos++;
+                                    if (puntos == 3){break;}
+                                }else{
+                                    puntos = 0;}
+                            }
+                            fila = 5;
+                        }
+
+                        if (puntos != 3){
+
+                        }
 
 
                         if (puntos == 3){

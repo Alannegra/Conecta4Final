@@ -70,20 +70,23 @@ public class ThreadServidorAdivina_Obj implements Runnable {
                         int puntos = 0;
 
                         for (int i = 0; i < tauler.matrix.length - 1; i++) {
-                            if (tauler.matrix[i][j.num-1] == Integer.parseInt(j.numeroDeJugador) && tauler.matrix[i+1][j.num-1] == tauler.matrix[i][j.num-1]){
+                            if (tauler.matrix[i][j.num-1] == Integer.parseInt(j.numeroDeJugador) && tauler.matrix[i+1][j.num-1] == Integer.parseInt(j.numeroDeJugador)){
                                 puntos++;
+                                if (puntos == 3){break;}
                             }else{
                                 puntos = 0;}
 
                         }
+
+
+
                         if (puntos == 3){
                             ganar = true;
-                            System.out.println("ganar");
-                        }
-
-                        tauler.cambioTurno();
+                            System.out.println("Has ganado!");
+                            tauler.finalTurno();
+                        }else{tauler.cambioTurno();}
                     }
-                    Thread.sleep(5000);
+                    Thread.sleep(1000);
                     tauler.map_jugadors.put(j.Nom, a);
                     //System.out.println(j.OtroInt + "XD");
 
@@ -117,7 +120,6 @@ public class ThreadServidorAdivina_Obj implements Runnable {
                     System.out.println(j.Nom + " A Guanyat!");
                     tauler.acabats++;
                     tauler.resultat = 0;
-                    tauler.cambioTurno();
                 }
             }
         }catch(IOException | InterruptedException e){

@@ -37,6 +37,11 @@ public class Tauler implements Serializable {
         return turno;
     }
 
+    public int finalTurno(){
+        turno = 3;
+        return turno;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

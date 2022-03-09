@@ -80,6 +80,12 @@ public class ClientTcpAdivina_Obj extends Thread {
 
             try {
 
+                if (t.turno == 3){
+                    System.out.println("Has pedido :(");
+                    System.out.println(t);
+                    continueConnected = false;
+                    continue;
+                }
                 if (t.map_jugadors.get(j.Nom) == t.turno) {
                     if (t.resultat != 0) {
                         System.out.println("Entra un número: ");
@@ -160,7 +166,7 @@ public class ClientTcpAdivina_Obj extends Thread {
         Scanner sip = new Scanner(System.in);
         ipSrv = sip.next();
         //ipSrv = "192.168.22.109";
-        ipSrv = "192.168.1.39";
+        ipSrv = "192.168.122.1";
         System.out.println("Nom jugador:");
         jugador = sip.next();
         System.out.println("Numero de jugador");

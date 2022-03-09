@@ -13,7 +13,7 @@ public class ThreadServidorAdivina_Obj implements Runnable {
     private Tauler tauler;
     private boolean acabat;
     private boolean ganar = false;
-    private int puntos = 0, fila = 5, diagonalFila, diagonalDerecha;
+    private int puntos = 0, fila = 5, diagonalHorizontal, diagonalVertical;
 
     public ThreadServidorAdivina_Obj(Socket clientSocket, SecretNum ns, Tauler t, int turno) throws IOException {
         this.clientSocket = clientSocket;
@@ -88,11 +88,34 @@ public class ThreadServidorAdivina_Obj implements Runnable {
                                 }else{
                                     puntos = 0;}
                             }
-                            fila = 5;
+                            fila = 5; //ERROR
                         }
 
                         if (puntos != 3){
+                            diagonalHorizontal = fila;
+                            diagonalVertical = j.num - 1;
+                            int bucle = 6 - diagonalVertical;
 
+                            for (int i = 0; i <10; i++){
+                                if (diagonalHorizontal == 0 || diagonalVertical == 0){
+                                    break;
+                                }else{
+                                    diagonalHorizontal--;
+                                    diagonalVertical--;
+                                }
+                            }
+
+                            if (diagonalVertical > 2 && diagonalHorizontal < 4){
+                                for (int i = 0; i < bucle; i++) {
+                                    if (tauler.matrix[diagonalHorizontal][diagonalVertical] == Integer.parseInt(j.numeroDeJugador) && tauler.matrix[diagonalHorizontal+1][diagonalVertical+1] == Integer.parseInt(j.numeroDeJugador)){
+                                        puntos++;
+                                        if (puntos == 3){break;}
+                                    }else{
+                                        puntos = 0;}
+                                    diagonalVertical++;
+                                    diagonalHorizontal++;
+                                }
+                            }
                         }
 
 

@@ -64,7 +64,7 @@ public class ClientTcpAdivina_Obj extends Thread {
                     msg = "Més petit";
                     break;
                 case 0:
-                    System.out.println("Correcte");
+                    System.out.println("Conecta 4!");
                     System.out.println(t);
                     continueConnected = false;
                     continue;

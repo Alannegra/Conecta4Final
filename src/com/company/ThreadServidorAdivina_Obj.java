@@ -12,6 +12,7 @@ public class ThreadServidorAdivina_Obj implements Runnable {
     private SecretNum ns;
     private Tauler tauler;
     private boolean acabat;
+    private boolean ganar = false;
 
     public ThreadServidorAdivina_Obj(Socket clientSocket, SecretNum ns, Tauler t, int turno) throws IOException {
         this.clientSocket = clientSocket;
@@ -57,7 +58,7 @@ public class ThreadServidorAdivina_Obj implements Runnable {
 
                     if (tauler.map_jugadors.get(j.Nom) == tauler.turno) {
 
-                        for (int i = 5; i > 0; i--) {
+                        for (int i = 5; i > -1; i--) {
                             if (tauler.matrix[i][j.num-1] == 0){
                                 tauler.matrix[i][j.num-1] = Integer.parseInt(j.numeroDeJugador);
                                 break;
@@ -65,7 +66,7 @@ public class ThreadServidorAdivina_Obj implements Runnable {
                         }
 
                         int puntos = 0;
-                        boolean ganar = false;
+
                         for (int i = 0; i < tauler.matrix.length - 1; i++) {
                             if (tauler.matrix[i][j.num-1] == Integer.parseInt(j.numeroDeJugador) && tauler.matrix[i+1][j.num-1] == tauler.matrix[i][j.num-1]){
                                 puntos++;
@@ -109,10 +110,12 @@ public class ThreadServidorAdivina_Obj implements Runnable {
                 //comprobar la jugada i actualitzar tauler amb el resultat de la jugada
                 //tauler.resultat = ns.comprova(j.num);
                 tauler.resultat = 4;
-                if(tauler.resultat == 0) {
+                if(ganar) {
                     acabat = true;
-                    System.out.println(j.Nom + " l'ha encertat");
+                    System.out.println(j.Nom + " A Guanyat!");
                     tauler.acabats++;
+                    tauler.resultat = 0;
+                    tauler.cambioTurno();
                 }
             }
         }catch(IOException | InterruptedException e){

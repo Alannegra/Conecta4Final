@@ -54,9 +54,11 @@ public class ThreadServidorAdivina_Obj implements Runnable {
                     int tirades = tauler.map_jugadors.get(j.Nom) + 1;
 
                     int a = Integer.parseInt(j.numeroDeJugador);
-
-
-                    if (tauler.map_jugadors.get(j.Nom) == tauler.turno) {
+                    boolean columnainvalida = false;
+                    if (j.num > 0 && j.num < 8){
+                        columnainvalida = true;
+                    }
+                    if (tauler.map_jugadors.get(j.Nom) == tauler.turno && columnainvalida) {
 
                         for (int i = 5; i > -1; i--) {
                             if (tauler.matrix[i][j.num-1] == 0){

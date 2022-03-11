@@ -91,32 +91,37 @@ public class ThreadServidorAdivina_Obj implements Runnable {
                             fila = 5; //ERROR
                         }
 
+
+                        /*
+
+                        DIAGONALES EN PRUEBAS
+
                         if (puntos != 3){
-                            diagonalHorizontal = fila;
-                            diagonalVertical = j.num - 1;
-                            int bucle = 6 - diagonalVertical;
-
-                            for (int i = 0; i <10; i++){
-                                if (diagonalHorizontal == 0 || diagonalVertical == 0){
-                                    break;
-                                }else{
-                                    diagonalHorizontal--;
-                                    diagonalVertical--;
-                                }
-                            }
-
-                            if (diagonalVertical > 2 && diagonalHorizontal < 4){
-                                for (int i = 0; i < bucle; i++) {
-                                    if (tauler.matrix[diagonalHorizontal][diagonalVertical] == Integer.parseInt(j.numeroDeJugador) && tauler.matrix[diagonalHorizontal+1][diagonalVertical+1] == Integer.parseInt(j.numeroDeJugador)){
-                                        puntos++;
-                                        if (puntos == 3){break;}
-                                    }else{
-                                        puntos = 0;}
-                                    diagonalVertical++;
-                                    diagonalHorizontal++;
+                            for (int i = 0; i < 4; i++) {
+                                for (int k = 0; k < 3; k++) {
+                                    if (tauler.matrix[i][k] ==Integer.parseInt(j.numeroDeJugador) &&
+                                            tauler.matrix[i+1][k+1] == Integer.parseInt(j.numeroDeJugador) &&
+                                            tauler.matrix[i+2][k+2] == Integer.parseInt(j.numeroDeJugador) &&
+                                            tauler.matrix[i+3][k+3] == Integer.parseInt(j.numeroDeJugador)){
+                                        puntos = 3;
+                                    }
                                 }
                             }
                         }
+
+
+                        if (puntos != 3){
+                            for (int i = 5; i > 2; i++) {
+                                for (int k = 0; k < 3; k++) {
+                                    if (tauler.matrix[i][k] ==Integer.parseInt(j.numeroDeJugador) &&
+                                            tauler.matrix[i-1][k+1] == Integer.parseInt(j.numeroDeJugador) &&
+                                            tauler.matrix[i-2][k+2] == Integer.parseInt(j.numeroDeJugador) &&
+                                            tauler.matrix[i-3][k+3] == Integer.parseInt(j.numeroDeJugador)){
+                                        puntos = 3;
+                                    }
+                                }
+                            }
+                        }*/
 
 
                         if (puntos == 3){

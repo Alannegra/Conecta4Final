@@ -14,7 +14,7 @@ public class ThreadServidorAdivina_Obj implements Runnable {
     private boolean acabat;
     private boolean ganar = false;
     private int puntos = 0, fila = 5, diagonalHorizontal, diagonalVertical;
-
+    private int puntosD = 0;
     public ThreadServidorAdivina_Obj(Socket clientSocket, SecretNum ns, Tauler t, int turno) throws IOException {
         this.clientSocket = clientSocket;
         this.ns = ns;
@@ -74,7 +74,10 @@ public class ThreadServidorAdivina_Obj implements Runnable {
                         for (int i = 0; i < tauler.matrix.length - 1; i++) {
                             if (tauler.matrix[i][j.num-1] == Integer.parseInt(j.numeroDeJugador) && tauler.matrix[i+1][j.num-1] == Integer.parseInt(j.numeroDeJugador)){
                                 puntos++;
-                                if (puntos == 3){break;}
+                                if (puntos == 3){
+                                    System.out.println("Vertical");
+                                    break;
+                                }
                             }else{
                                 puntos = 0;}
 
@@ -84,7 +87,10 @@ public class ThreadServidorAdivina_Obj implements Runnable {
                             for (int i = 0; i < 5; i++) {
                                 if (tauler.matrix[fila][i] == Integer.parseInt(j.numeroDeJugador) && tauler.matrix[fila][i+1] == Integer.parseInt(j.numeroDeJugador)){
                                     puntos++;
-                                    if (puntos == 3){break;}
+                                    if (puntos == 3){
+                                        System.out.println("Horizontal");
+                                        break;
+                                    }
                                 }else{
                                     puntos = 0;}
                             }
@@ -92,6 +98,48 @@ public class ThreadServidorAdivina_Obj implements Runnable {
                         }
 
 
+                        //   Alan
+                        if (puntos != 3){
+
+                            for (int k = 5; k > -1; k--) {
+                                int y = 0;
+                                int x = 0;
+                                for (int i = k; i > -1; i--) {
+                                    if (tauler.matrix[i][x] == Integer.parseInt(j.numeroDeJugador)){
+                                        System.out.println("["+ i + "] [" + x + "]" + " " +Integer.parseInt(j.numeroDeJugador));
+                                        puntosD++;
+                                        if (puntosD == 4){break;}
+                                    }else {
+                                        puntosD = 0;
+                                    }
+                                    x++;
+                                }
+                                if (puntosD == 4){break;}
+                            }
+
+                        }
+
+                        if (puntosD != 4){
+                            int z = 0;
+                            for (int k = 5; k > -1; k--) {
+                                int y = 5;
+                                int x = 1 +z;
+
+                                for (int i = k; i > -1; i--) {
+                                    if (tauler.matrix[i][x] == Integer.parseInt(j.numeroDeJugador)){
+                                        System.out.println("["+ i + "] [" + x + "]" + " " +Integer.parseInt(j.numeroDeJugador));
+                                        puntosD++;
+                                        if (puntosD == 4){break;}
+                                    }else {
+                                        puntosD = 0;
+                                    }
+                                    x++;
+                                }
+                                z++;
+                                if (puntosD == 4){break;}
+                            }
+
+                        }
                         /*
 
                         DIAGONALES EN PRUEBAS
@@ -124,13 +172,13 @@ public class ThreadServidorAdivina_Obj implements Runnable {
                         }*/
 
 
-                        if (puntos == 3){
+                        if (puntos == 3 || puntosD == 4){
                             ganar = true;
                             System.out.println("Has ganado!");
                             tauler.finalTurno();
                         }else{tauler.cambioTurno();}
                     }
-                    Thread.sleep(1000);
+                    Thread.sleep(4000);
                     tauler.map_jugadors.put(j.Nom, a);
                     //System.out.println(j.OtroInt + "XD");
 

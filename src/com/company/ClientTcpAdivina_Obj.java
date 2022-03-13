@@ -166,7 +166,7 @@ public class ClientTcpAdivina_Obj extends Thread {
         Scanner sip = new Scanner(System.in);
         ipSrv = sip.next();
         //ipSrv = "192.168.22.109";
-        ipSrv = "192.168.1.39";
+        //ipSrv = "192.168.1.39";
         System.out.println("Nom jugador:");
         jugador = sip.next();
         System.out.println("Numero de jugador");

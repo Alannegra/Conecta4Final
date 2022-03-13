@@ -106,15 +106,19 @@ public class ThreadServidorAdivina_Obj implements Runnable {
                                 int x = 0;
                                 for (int i = k; i > -1; i--) {
                                     if (tauler.matrix[i][x] == Integer.parseInt(j.numeroDeJugador)){
-                                        System.out.println("["+ i + "] [" + x + "]" + " " +Integer.parseInt(j.numeroDeJugador));
+                                        System.out.println("D1["+ i + "] [" + x + "]" + " " +Integer.parseInt(j.numeroDeJugador));
                                         puntosD++;
-                                        if (puntosD == 4){break;}
+                                        if (puntosD == 4){
+                                            System.out.println("Diagonal1");
+                                            break;}
                                     }else {
                                         puntosD = 0;
                                     }
                                     x++;
                                 }
-                                if (puntosD == 4){break;}
+                                if (puntosD == 4){break;}else {
+                                    puntosD = 0;
+                                }
                             }
 
                         }
@@ -127,16 +131,20 @@ public class ThreadServidorAdivina_Obj implements Runnable {
 
                                 for (int i = k; i > -1; i--) {
                                     if (tauler.matrix[i][x] == Integer.parseInt(j.numeroDeJugador)){
-                                        System.out.println("["+ i + "] [" + x + "]" + " " +Integer.parseInt(j.numeroDeJugador));
+                                        System.out.println("D2["+ i + "] [" + x + "]" + " " +Integer.parseInt(j.numeroDeJugador));
                                         puntosD++;
-                                        if (puntosD == 4){break;}
+                                        if (puntosD == 4){
+                                            System.out.println("Diagonal2");
+                                            break;}
                                     }else {
                                         puntosD = 0;
                                     }
                                     x++;
                                 }
                                 z++;
-                                if (puntosD == 4){break;}
+                                if (puntosD == 4){break;}else {
+                                    puntosD = 0;
+                                }
                             }
 
                         }
@@ -147,15 +155,19 @@ public class ThreadServidorAdivina_Obj implements Runnable {
                                 int x = 6;
                                 for (int i = k; i > -1; i--) {
                                     if (tauler.matrix[i][x] == Integer.parseInt(j.numeroDeJugador)){
-                                        System.out.println("["+ i + "] [" + x + "]" + " " +Integer.parseInt(j.numeroDeJugador));
+                                        System.out.println("D3["+ i + "] [" + x + "]" + " " +Integer.parseInt(j.numeroDeJugador));
                                         puntosD++;
-                                        if (puntosD == 4){break;}
+                                        if (puntosD == 4){
+                                            System.out.println("Diagonal3");
+                                            break;}
                                     }else {
                                         puntosD = 0;
                                     }
                                     x--;
                                 }
-                                if (puntosD == 4){break;}
+                                if (puntosD == 4){break;}else {
+                                    puntosD = 0;
+                                }
 
                             }
 
@@ -169,17 +181,23 @@ public class ThreadServidorAdivina_Obj implements Runnable {
                                 int x =k -z;
 
                                 for (int i = k; i > -1; i--) {
-                                    if (tauler.matrix[i][x] == Integer.parseInt(j.numeroDeJugador)){
-                                        System.out.println("["+ i + "] [" + x + "]" + " " +Integer.parseInt(j.numeroDeJugador));
+                                    if (tauler.matrix[y][x] == Integer.parseInt(j.numeroDeJugador)){
+                                        System.out.println("D4["+ y + "] [" + x + "]" + " " +Integer.parseInt(j.numeroDeJugador));
                                         puntosD++;
-                                        if (puntosD == 4){break;}
+                                        if (puntosD == 4){
+                                            System.out.println("Diagonal4");
+                                            break;}
                                     }else {
                                         puntosD = 0;
                                     }
                                     x--;
+                                    y--;
                                 }
                                 //z++;
-                                if (puntosD == 4){break;}
+                                if (puntosD == 4){break;}else {
+                                    puntosD = 0;
+                                }
+
                             }
 
                         }
